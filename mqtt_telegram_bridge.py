@@ -298,7 +298,7 @@ def main():
     client = mqtt.Client(
         client_id=MQTT_CLIENT_ID,
         protocol=mqtt.MQTTv311,
-        callback_api_version=mqtt.CallbackAPIVersion.VERSION2
+        callback_api_version=mqtt.CallbackAPIVersion.VERSION1
     )
 
     # Set callbacks
