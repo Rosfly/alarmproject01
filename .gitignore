@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.env
+venv/
+```
+
+---
+
+## **Step 2: Get Your Telegram Chat ID**
+
+You need to find your Telegram Chat ID:
+
+1. Start a chat with your bot in Telegram (send any message like `/start`)
+2. Visit this URL in your browser (replace `<YOUR_BOT_TOKEN>`):
+```
+   https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
