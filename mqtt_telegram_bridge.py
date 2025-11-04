@@ -27,7 +27,7 @@ Usage:
     4. Run the script:
        python3 mqtt_lwt_telegram_bot.py
 """
-
+import os
 import paho.mqtt.client as mqtt
 import requests
 import json
