@@ -230,9 +230,11 @@ def on_message(client, userdata, msg):
             if status == 'offline':
                 reason = data.get('reason', 'unknown')
                 print(f"🔴 Device offline detected: {device_id} - Reason: {reason}")
+                # Use device timestamp if available (for LWT), otherwise server timestamp
+                device_timestamp = data.get('timestamp', timestamp)
 
                 # Send Telegram notification
-                message = format_offline_message(device_id, reason, timestamp)
+                message = format_offline_message(device_id, reason, device_timestamp)
                 if send_telegram_message(message):
                     print("✅ Offline notification sent to Telegram")
                 else:
@@ -240,9 +242,11 @@ def on_message(client, userdata, msg):
 
             elif status == 'online' and NOTIFY_ONLINE:
                 print(f"🟢 Device online detected: {device_id}")
+                # Use device timestamp (Berlin time from device)
+                device_timestamp = data.get('timestamp', timestamp)
 
                 # Send Telegram notification
-                message = format_online_message(device_id, timestamp)
+                message = format_online_message(device_id, device_timestamp)
                 if send_telegram_message(message):
                     print("✅ Online notification sent to Telegram")
                 else:
