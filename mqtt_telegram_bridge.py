@@ -274,6 +274,28 @@ def on_message(client, userdata, msg):
                 # message += "Initial motion was a false alarm."
                 # send_telegram_message(message)
 
+            elif status == 'Motion detected':
+                # Initial motion detection (not yet confirmed)
+                print(f"🟡 Initial motion detection: {device_id}")
+                device_timestamp = data.get('timestamp', timestamp)
+
+                # Send Telegram notification for initial detection
+                message = f"🟡 <b>Motion Detected</b>\n\n"
+                message += f"<b>Device:</b> <code>{device_id}</code>\n"
+                message += f"<b>Status:</b> Motion detected (awaiting confirmation)\n"
+                message += f"<b>Time:</b> {device_timestamp}\n\n"
+                message += "Monitoring for continued movement..."
+
+                if send_telegram_message(message):
+                    print("✅ Initial motion alert sent to Telegram")
+                else:
+                    print("❌ Failed to send Telegram notification")
+
+            else:
+                # Catch-all for unknown status messages
+                print(f"⚠️ Unknown status received: '{status}' from {device_id}")
+                print(f"   Full payload: {payload}")
+
         # Handle alive topic (heartbeat)
         elif topic == MQTT_TOPIC_ALIVE and MONITOR_ALIVE:
             device_id = data.get('device_id', 'Unknown')
