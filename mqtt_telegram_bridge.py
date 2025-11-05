@@ -33,6 +33,7 @@ import requests
 import json
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # ============================================================================
 # CONFIGURATION - MODIFY THESE VALUES
@@ -193,7 +194,8 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
         # Startup notification disabled to avoid spam on reconnections
         # The monitor is ready when subscriptions are complete
-        print(f"✅ Monitor ready at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        berlin_tz = ZoneInfo("Europe/Berlin")
+        print(f"✅ Monitor ready at {datetime.now(berlin_tz).strftime('%Y-%m-%d %H:%M:%S')}")
     else:
         print(f"❌ Connection failed with code {rc}")
 
@@ -214,7 +216,9 @@ def on_message(client, userdata, msg):
     """
     topic = msg.topic
     payload = msg.payload.decode('utf-8')
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # Get current time in Berlin timezone
+    berlin_tz = ZoneInfo("Europe/Berlin")
+    timestamp = datetime.now(berlin_tz).strftime('%Y-%m-%d %H:%M:%S')
 
     print(f"\n📩 Message received on '{topic}':")
     print(f"   Payload: {payload}")
@@ -373,8 +377,9 @@ def main():
         print("\n\n⏹️ Shutting down...")
 
         # Send shutdown notification
+        berlin_tz = ZoneInfo("Europe/Berlin")
         shutdown_msg = f"🛑 <b>MQTT LWT Monitor Stopped</b>\n\n"
-        shutdown_msg += f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        shutdown_msg += f"Time: {datetime.now(berlin_tz).strftime('%Y-%m-%d %H:%M:%S')}"
         send_telegram_message(shutdown_msg)
 
         client.disconnect()
