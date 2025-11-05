@@ -191,12 +191,9 @@ def on_connect(client, userdata, flags, rc, properties=None):
             client.subscribe(MQTT_TOPIC_ALIVE, qos=1)
             print(f"📡 Subscribed to alive topic: {MQTT_TOPIC_ALIVE}")
 
-        # Send startup notification
-        startup_msg = f"🤖 <b>MQTT LWT Monitor Started</b>\n\n"
-        startup_msg += f"Monitoring device: <code>IoT_device_365</code>\n"
-        startup_msg += f"Broker: <code>{MQTT_BROKER}:{MQTT_PORT}</code>\n"
-        startup_msg += f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-        send_telegram_message(startup_msg)
+        # Startup notification disabled to avoid spam on reconnections
+        # The monitor is ready when subscriptions are complete
+        print(f"✅ Monitor ready at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     else:
         print(f"❌ Connection failed with code {rc}")
 
